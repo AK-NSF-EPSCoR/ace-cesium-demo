@@ -2,6 +2,17 @@
 
 ## Cesium Demo : Historical imagery and change detection
 
+This is a demonstration created to explore using the [cesium]() tool kit to do web visualiation of histoircal imagery and lake change detection for the NSF EPSCoR Alaska Adapting to a Changing Environment (EPSCoR ACE) project.
+
+The imagery datasets visualizaed here are:
+* 1950's historical imagery by the USGS
+* 1980's historical Alaska High Altitutde Photogrammitry project imagery
+* current imagery layers
+
+Layerd in here is a lake change detection dataset created for the EPSCoR ACE Northern Test Case.  Using the historical imagery lakes from the three different eras were mapped to allow lake changes to be detected and better understood.
+
+This Cesium web interface was an exploration by a summer intern, Khan Howe, into how to use the Cesium toolkit to bring in imagery web services and the lake change datasets done by other summer interns into a web visualizatoin environment.
+
 
 ### HOW TO's:
 You can access the web demo by going to:
