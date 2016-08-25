@@ -1,8 +1,12 @@
-Welcome to the GINA Cesium Demo ReadMe.
+# UAF GINA / AK EPSCoR ACE
+
+## Cesium Demo : Historical imagery and change detection
 
 
-HOW TO's:
+### HOW TO's:
 You can access the web demo by going to:
+
+(insert link here)
 
 Operation should be intuitive, as it behaves about the same as google earth/maps.
 
