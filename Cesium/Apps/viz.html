@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Use correct character set. -->
+  <meta charset="utf-8">
+  <!-- Tell IE to use the latest, best version. -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <title>Hello World!</title>
+  <script src="../Build/Cesium/Cesium.js"></script>
+  <style>
+      @import url(../Build/Cesium/Widgets/widgets.css);
+      html, body, #cesiumContainer {
+        position: relative;
+          top: 0px;
+          right: 0;
+          width: 100%;
+          height: 99%;
+        /*border: 3px solid #73AD21}*/}
+  </style>
+</head>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/../bootstrap/js/bootstrap.min.js"></script>
+
+<script>
+function fly_to_lakes() {
+var lakes = viewer.dataSources.add(Cesium.GeoJsonDataSource.load('https://alaska113.github.io/lakes.txt'));
+viewer.camera.flyTo({
+       destination : Cesium.Cartesian3.fromDegrees(29.0, 109.77, 75000.0),
+       heading : 90.0,
+   pitch : 175.0,
+   roll : 25.0
+});
+};
+function add_1955_imagery() {
+  var layers = viewer.scene.imageryLayers;
+  var old_lakes = layers.addImageryProvider(new Cesium.UrlTemplateImageryProvider({
+   url : 'http://tiles.gina.alaska.edu/tiles/epscor_ntc_epscor_northern_historical_usgs_1955/tile/{x}/{y}/{z}'
+ }));
+ viewer.camera.flyTo({
+        destination : Cesium.Cartesian3.fromDegrees(29.0, 109.77, 75000.0),
+        heading : 90.0,
+    pitch : 175.0,
+    roll : 25.0
+ });
+};
+</script>
+<script>
+
+function add_1982_imagery() {
+  var layers = viewer.scene.imageryLayers;
+  var old_1982_lakes = layers.addImageryProvider(new Cesium.UrlTemplateImageryProvider({
+   url : 'http://tiles.gina.alaska.edu/tiles/epscor_ntc_epscor_northern_historical_ahap_1982_geo/tile/{x}/{y}/{z}'
+ }));
+ viewer.camera.flyTo({
+        destination : Cesium.Cartesian3.fromDegrees(29.0, 109.77, 75000.0),
+        heading : 90.0,
+    pitch : 175.0,
+    roll : 25.0
+ });
+ };
+ </script>
+ <script>
+  function fly_to_alaska() {
+    viewer.camera.flyTo({
+           destination : Cesium.Cartesian3.fromDegrees(29.0, 116.0, 3000000.0),
+           heading : 90.0,
+       pitch : 175.0,
+       roll : 25.0
+    });
+  };
+  function fly_to_fairbanks() {
+    viewer.camera.flyTo({
+           destination : Cesium.Cartesian3.fromDegrees(212.3, 64.8378, 25000.0),
+           heading : 90.0,
+       pitch : 175.0,
+       roll : 25.0
+    });
+  };
+  function planets(){
+    viewer.scene.camera.frustum.far = 1e12; //Move the far wall of the viewing frustum.
+    var scene = viewer.scene;
+    scene.skyBox.show = true;
+    scene.sun.show = false;
+    scene.globe.enableLighting = true;
+
+    var moonDistance = 384e6;var i;var center;
+    var sunN=0;var merN=1;var venN=2;var earN=3;var marN=4;
+    var jupN=5;var satN=6;var uraN=7;var nepN=8;
+
+    var radius = [
+        6.955e8 /*Sun*/
+        ,2440000 /*Mercury*/
+        ,6052000 /*Venus*/
+        ,6371000 /*Earth*/
+        ,3390000 /*Mars*/
+        ,69911000 /*Jupiter*/
+        ,58232000 /*Saturn*/
+        ,25362000 /*Uranus*/
+        ,24622000 /*Neptune*/
+        ]
+    var color = [
+        Cesium.Color.fromCssColorString('#FFFF00') /*Sun*/
+        ,Cesium.Color.fromCssColorString('#444444') /*Mercury*/
+        ,Cesium.Color.fromCssColorString('#EEEEEE') /*Venus*/
+        ,Cesium.Color.fromCssColorString('#0000FF') /*Earth*/
+        ,Cesium.Color.fromCssColorString('#FF8800') /*Mars*/
+        ,Cesium.Color.fromCssColorString('#CC3333') /*Jupiter*/
+        ,Cesium.Color.fromCssColorString('#D1B546') /*Saturn*/
+        ,Cesium.Color.fromCssColorString('#6DB7A6') /*Uranus*/
+        ,Cesium.Color.fromCssColorString('#71BEE5') /*Neptune*/
+        ]
+    var angle = [
+        0 /*Sun*/
+        ,0 /*Mercury*/
+        ,15 /*Venus*/
+        ,0 /*Earth*/
+        ,30 /*Mars*/
+        ,45 /*Jupiter*/
+        ,60 /*Saturn*/
+        ,75 /*Uranus*/
+        ,90 /*Neptune*/
+        ]
+    var mat=[];var pri=[];
+    i=0;while(i<9)
+    {
+        if(i==earN){i+=1;continue;}
+        mat[i]=Cesium.Material.fromType(Cesium.Material.RimLightingType);
+        mat[i].uniforms.color=color[i];
+        if(i == sunN){center=Cesium.Cartesian3();}else
+        {center=new Cesium.Cartesian3(moonDistance*Math.cos(angle[i]),moonDistance*Math.sin(angle[i]),0);}
+        pri[i]=scene.primitives.add(new Cesium.EllipsoidPrimitive(
+        {
+            center:center
+            ,radii:new Cesium.Cartesian3(radius[i], radius[i], radius[i])
+            ,material:mat[i]
+        }
+        ));
+        i+=1;
+    }
+
+    //The rest is unmodified from Ed Mackey's Sun program (except the {x:1000000000,y:0,z:0} )
+
+    // Allocate "new" variables outside of the render loop when possible, to reduce garbage collection.
+    var sunPosition = new Cesium.Cartesian3();
+    var icrfToFixedScratch = new Cesium.Matrix3();
+    var sunModelMatrixScratch = new Cesium.Matrix4();
+
+    // Update the camera and the Sun with each animation frame.
+    function icrf(scene, time) {
+        if (scene.mode !== Cesium.SceneMode.SCENE3D) {
+            return;
+        }
+
+        var icrfToFixed = Cesium.Transforms.computeIcrfToFixedMatrix(time, icrfToFixedScratch);
+        if (Cesium.defined(icrfToFixed)) {
+            // Update the camera with the new ICRF rotation
+            var offset = Cesium.Cartesian3.clone(scene.camera.position);
+    scene.camera.lookAtTransform(Cesium.Matrix4.fromRotationTranslation(icrfToFixed),offset);
+
+            // Compute Sun position in Inertial.
+            Cesium.Simon1994PlanetaryPositions.computeSunPositionInEarthInertialFrame(time, sunPosition);
+
+            // Transform Sun position from Inertial to Fixed.
+            Cesium.Matrix3.multiplyByVector(icrfToFixed, {x:1000000000,y:0,z:0}, sunPosition);
+
+            // Update the Sun's modelMatrix to move it from the origin to its new position for this animation frame.
+            pri[sunN].modelMatrix = Cesium.Matrix4.fromRotationTranslation(Cesium.Matrix3.IDENTITY, sunPosition, sunModelMatrixScratch);
+        }
+    }
+    scene.preRender.addEventListener(icrf);
+
+  };
+</script>
+<body>
+<div align="center">
+  <button onclick = "fly_to_lakes();">Lakes</button>
+  <button onclick = "add_1955_imagery();">1955 Data</button>
+    <button onclick="add_1982_imagery();">1982 Data</button>
+  <button onclick = "fly_to_alaska();">Alaska</button>
+  <button onclick = "fly_to_fairbanks();">Fairbanks</button>
+  <button onclick="planets();">Silly Planets</button>
+
+</div>
+  <div id="cesiumContainer" ;></div>
+    <!-- Standard button -->
+
+  <script>
+
+  var viewer = new Cesium.Viewer('cesiumContainer', {
+    imageryProvider : new Cesium.UrlTemplateImageryProvider({
+       url : 'http://tiles.gina.alaska.edu/tiles/bdl/tile/{x}/{y}/{z}'
+       //url : 'http://tiles.proto.gina.alaska.edu/tilesrv/bdl_aa/tile/{x}/{y}/{z}'
+  }),
+      baseLayerPicker : false,
+         crossDomain: true,
+     vrButton : true,
+     fullscreenButton : true
+  });
+
+//   var dataSource1 = new Cesium.GeoJsonDataSource();
+// dataSource1.load('https://alaska113.github.io/lakes.txt');
+//
+// Sandcastle.addToolbarButton('Add DataSource 1', function() {
+//    viewer.dataSources.add(dataSource1);
+// });
+
+
+ // var promise1 = Cesium.GeoJsonDataSource.load('https://alaska113.github.io/lakes.txt');
+ // Cesium.when(promise1, function(dataSource1){
+ //    viewer.addToolbarButton('Add Lakes', function() {
+ //        viewer.dataSources.add(dataSource1);
+ //    })
+ //  });
+
+//var lakes = viewer.dataSources.add(Cesium.GeoJsonDataSource.load('https://alaska113.github.io/mars.txt'));
+//var mars = new Cesium.Ellipsoid.MOON
+
+
+  </script>
+
+<!-- <script>
+  var viewer = new Cesium.Viewer('cesiumContainer', {
+     imageryProvider : new Cesium.UrlTemplateImageryProvider({
+    url : 'https://www.mapaplanet.org/explorer-bin/explorer.cgi?map=Moon&layers=moon_clementine_bw&west=-180&south=-90&east=180&north=90&center_lat=&center=0&defaultcenter=on&grid=none&stretch=auto&projection=SIMP&advoption=NO&info=NO&resolution=2&scale=15.16167&imageTopX=-4389305.0436973572&imageTopY=2721520.7438468933',
+    //credit : 'Map tiles by CartoDB, under CC BY 3.0. Data by OpenStreetMap, under ODbL.'
+}),
+baseLayerPicker : false,
+   crossDomain: true,
+vrButton : true
+});
+</script> -->
+</body>
+</html>
