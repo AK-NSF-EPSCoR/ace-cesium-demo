@@ -16,8 +16,7 @@ This Cesium web interface was an exploration by a summer intern, Khan Howe, into
 
 ### HOW TO's:
 You can access the web demo by going to:
-
-(insert link here)
+https://ak-nsf-epscor.github.io/ace-cesium-demo/Cesium/Apps/viz.html
 
 Operation should be intuitive, as it behaves about the same as google earth/maps.
 
@@ -44,6 +43,10 @@ Outlines of the Northern Test Case Lakes provided by Roberta Walker can be found
 
 FUTURE WORK:
 -If someone were to create a union between this demo and the Unity demo, it would be a very powerful tool. My original plan after experimenting with both was to have an area selection and display tool made with Cesium that then creates a 3D surface terrain map on unity. I unfotunatly could not make it to this step.
+
+-Waiting on a 3857 web mercator projection for 1982 data. 
+
+-HTML buttons function as on-off switches rather than just on.
 
 -A better interface and live updated information would be a great use of Cesium. An example of this type of interface can be found here: http://science.nasa.gov/iSat/?group=SMD
 
