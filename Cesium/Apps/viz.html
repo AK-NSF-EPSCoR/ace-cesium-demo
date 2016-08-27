@@ -201,6 +201,13 @@ function add_1982_imagery() {
      fullscreenButton : true
   });
 
+  viewer.camera.flyTo({
+         destination : Cesium.Cartesian3.fromDegrees(29.0, 116.0, 3000000.0),
+         heading : 90.0,
+     pitch : 175.0,
+     roll : 25.0
+  });
+
 //   var dataSource1 = new Cesium.GeoJsonDataSource();
 // dataSource1.load('https://alaska113.github.io/lakes.txt');
 //
